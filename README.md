@@ -44,6 +44,88 @@ cp .env.example .env
    - `PRIVATE_KEY` - Your deployer wallet's private key (⚠️ Keep this secret!)
    - `ETHERSCAN_API_KEY` - For contract verification (optional)
 
+## 🔗 How to Install RPC Endpoint
+
+An RPC (Remote Procedure Call) endpoint allows your code to communicate with the Ethereum Sepolia testnet. Follow these steps:
+
+### Step 1: Choose Your RPC Provider
+
+#### **Option A: Infura**
+
+1. Go to [Infura](https://infura.io/) and sign up for a free account
+2. Log in to your dashboard
+3. Click **"Create New Project"**
+4. Enter a project name (e.g., "OtisPug")
+5. Select **"Ethereum"** as the product
+6. Click **"Create"**
+7. Go to **"ENDPOINTS"** tab
+8. Select **"Sepolia"** from the network dropdown
+9. Copy the **HTTPS** endpoint URL:
+   ```
+   https://sepolia.infura.io/v3/YOUR_PROJECT_ID
+   ```
+
+#### **Option B: Alchemy (Recommended)**
+
+1. Go to [Alchemy](https://www.alchemy.com/) and sign up for a free account
+2. Log in to your dashboard
+3. Click **"Create App"**
+4. Fill in the details:
+   - **App Name**: OtisPug
+   - **Environment**: Development
+   - **Chain**: Ethereum
+   - **Network**: Sepolia
+5. Click **"Create App"**
+6. Click on your app to view details
+7. Click **"API Key"** button
+8. Copy the **HTTPS** API endpoint:
+   ```
+   https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY
+   ```
+
+### Step 2: Add RPC Endpoint to `.env`
+
+1. Open the `.env` file you created:
+   ```bash
+   nano .env
+   # or use your favorite editor
+   ```
+
+2. Find the line:
+   ```
+   SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_KEY
+   ```
+
+3. Replace it with your actual RPC endpoint:
+   ```
+   SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY
+   ```
+
+4. Save the file (Ctrl+X, then Y, then Enter if using nano)
+
+### Step 3: Verify RPC Endpoint Works
+
+Test your RPC endpoint by running:
+```bash
+curl YOUR_RPC_ENDPOINT -X POST -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+
+You should see a response like:
+```json
+{"jsonrpc":"2.0","result":"0x123456","id":1}
+```
+
+✅ If you see this, your RPC endpoint is working!
+
+### ⚠️ Security Best Practices
+
+- **Never share your RPC endpoint or API key** publicly
+- **Keep `.env` file private** - Never commit it to version control
+- **Use environment variables** in production deployments
+- **Monitor your API usage** to avoid unexpected charges
+- **Rotate keys regularly** for enhanced security
+
 ## 📦 Project Structure
 
 ```
@@ -204,6 +286,7 @@ const metadataURI = "ipfs://QmYourMetadataHashHere"; // Your actual IPFS hash
 
 - **Never commit `.env`** - The `.gitignore` excludes it by default
 - **Never share your private key** - Keep it secure and offline
+- **Never share your RPC endpoint** - Treat it like a password
 - **Test on testnet first** - Always deploy to Sepolia before mainnet
 - **Use hardware wallets** - For mainnet deployments, use a hardware wallet
 - **Double-check addresses** - Verify wallet addresses before minting
@@ -216,6 +299,8 @@ const metadataURI = "ipfs://QmYourMetadataHashHere"; // Your actual IPFS hash
 - [IPFS Documentation](https://docs.ipfs.tech/)
 - [Sepolia Faucet](https://sepoliafaucet.com/)
 - [Sepolia Etherscan](https://sepolia.etherscan.io/)
+- [Infura](https://infura.io/)
+- [Alchemy](https://www.alchemy.com/)
 
 ## 📄 License
 

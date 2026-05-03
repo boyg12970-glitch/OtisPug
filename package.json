@@ -1,0 +1,22 @@
+{
+  "name": "otis-pug-nft",
+  "version": "1.0.0",
+  "description": "OtisPug - A unique NFT for the legendary pug Otis",
+  "main": "index.js",
+  "scripts": {
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "deploy:localhost": "hardhat run scripts/deploy.js --network localhost",
+    "verify": "hardhat verify",
+    "test": "hardhat test"
+  },
+  "keywords": ["nft", "ethereum", "pug", "otis"],
+  "author": "boyg12970-glitch",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.0.3",
+    "hardhat": "^2.17.0"
+  }
+}

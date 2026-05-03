@@ -10,6 +10,7 @@ OtisPug is a one-of-a-kind NFT representing the legendary Pug named Otis. This p
 - ✅ **NFT Metadata** - Complete trait definitions for Otis
 - ✅ **Deployment Scripts** - Ready-to-use deployment automation
 - ✅ **Hardhat Configuration** - Multi-network support
+- ✅ **Custom Wallet Minting** - Send NFT to any Ethereum address
 
 ## 🚀 Quick Start
 
@@ -18,6 +19,7 @@ OtisPug is a one-of-a-kind NFT representing the legendary Pug named Otis. This p
 - Node.js (v16 or higher)
 - npm or yarn
 - Git
+- Sepolia ETH for gas fees (get from [Sepolia Faucet](https://sepoliafaucet.com/))
 
 ### Installation
 
@@ -39,8 +41,8 @@ cp .env.example .env
 
 4. Edit `.env` and add your values:
    - `SEPOLIA_RPC_URL` - Get from [Infura](https://infura.io) or [Alchemy](https://www.alchemy.com/)
-   - `PRIVATE_KEY` - Your wallet's private key (⚠️ Keep this secret!)
-   - `ETHERSCAN_API_KEY` - For contract verification
+   - `PRIVATE_KEY` - Your deployer wallet's private key (⚠️ Keep this secret!)
+   - `ETHERSCAN_API_KEY` - For contract verification (optional)
 
 ## 📦 Project Structure
 
@@ -112,6 +114,18 @@ This will:
 3. Automatically mint Otis NFT to your wallet
 4. Save deployment info to `deployment.json`
 
+**Output example:**
+```
+🚀 Deploying OtisPug NFT Contract...
+📝 Deploying contract from: 0x1234...
+✅ OtisPug contract deployed at: 0xabcd...
+🎨 Minting Otis NFT to: 0x1234...
+✅ Otis NFT minted successfully!
+📊 Token ID: 0
+🔗 Metadata URI: ipfs://QmYourMetadataHashHere
+📱 Deployment info saved to deployment.json
+```
+
 ### Deploy to Mainnet
 
 ```bash
@@ -120,36 +134,79 @@ npm run deploy:mainnet
 
 ⚠️ **WARNING**: Deploying to mainnet costs real ETH. Make sure you have enough ETH in your wallet.
 
-## 💼 Adding to Your Wallet
+## 💼 Mint to a Specific Wallet
+
+To mint Otis NFT to a different wallet address:
+
+1. Edit `scripts/deploy.js` and change the mint line from:
+```javascript
+const tx = await contract.mintOtisPug(deployer.address, metadataURI);
+```
+
+To:
+```javascript
+const walletAddress = "0x2d3b335d58643d38987aeafcd3f3a1bfa51e7a8f"; // Replace with target wallet
+const tx = await contract.mintOtisPug(walletAddress, metadataURI);
+```
+
+2. Then deploy:
+```bash
+npm run deploy:sepolia
+```
+
+The NFT will be minted directly to that wallet address!
+
+## 📱 Adding to Your Wallet
 
 After deployment:
 
 1. Get the contract address from `deployment.json`
 2. Open your wallet (MetaMask, Phantom, etc.)
-3. Select "Import tokens" or "Add custom network"
-4. Enter the contract address
-5. Otis will appear in your wallet!
+3. Switch to Sepolia testnet
+4. Select "Import tokens" or "Add custom NFT"
+5. Enter the contract address and token ID (0)
+6. Otis will appear in your wallet! 🎉
+
+**For Sepolia testnet:**
+- **Network**: Sepolia Test Network
+- **RPC URL**: https://sepolia.infura.io/v3/YOUR_KEY
+- **Chain ID**: 11155111
+- **Currency**: SepoliaETH
 
 ## 📝 Verify Contract on Etherscan
+
+After deployment, verify your contract on [Sepolia Etherscan](https://sepolia.etherscan.io/):
 
 ```bash
 npx hardhat verify --network sepolia <CONTRACT_ADDRESS>
 ```
 
+Example:
+```bash
+npx hardhat verify --network sepolia 0xabcd1234567890abcd1234567890abcd12345678
+```
+
 ## 🔗 Upload Metadata to IPFS
 
-Before deploying, upload your metadata and image to IPFS:
+For permanent metadata storage:
 
 1. Use [Pinata](https://www.pinata.cloud/) or [NFT.storage](https://nft.storage/)
 2. Upload `metadata/otis.json` and your Otis image
-3. Get the IPFS hash
-4. Update `scripts/deploy.js` with the actual IPFS hash
+3. Get the IPFS hash (e.g., `QmYourMetadataHashHere`)
+4. Update `scripts/deploy.js`:
+```javascript
+const metadataURI = "ipfs://QmYourMetadataHashHere"; // Your actual IPFS hash
+```
+
+5. Redeploy with updated IPFS URI
 
 ## 🔒 Security
 
 - **Never commit `.env`** - The `.gitignore` excludes it by default
-- **Never share your private key** - Keep it secure
+- **Never share your private key** - Keep it secure and offline
 - **Test on testnet first** - Always deploy to Sepolia before mainnet
+- **Use hardware wallets** - For mainnet deployments, use a hardware wallet
+- **Double-check addresses** - Verify wallet addresses before minting
 
 ## 📚 Resources
 
@@ -157,6 +214,8 @@ Before deploying, upload your metadata and image to IPFS:
 - [Hardhat Documentation](https://hardhat.org/docs)
 - [Ethereum Development](https://ethereum.org/en/developers/)
 - [IPFS Documentation](https://docs.ipfs.tech/)
+- [Sepolia Faucet](https://sepoliafaucet.com/)
+- [Sepolia Etherscan](https://sepolia.etherscan.io/)
 
 ## 📄 License
 
